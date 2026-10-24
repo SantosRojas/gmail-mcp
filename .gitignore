@@ -1,0 +1,12 @@
+node_modules/
+dist/
+.env
+.env.*
+!.env.example
+.credentials/
+.cache/
+audit.log
+audit.log.1
+*.log
+*.tsbuildinfo
+*.ps1
