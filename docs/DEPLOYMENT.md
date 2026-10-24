@@ -78,12 +78,15 @@ requirement, not preemptively.
 
 ## Install troubleshooting
 
-- **sharp download fails on Windows**: `@xenova/transformers` pulls `sharp`
-  (image-only, unused here). Install with `npm install --omit=optional`, then
-  add the platform binding your toolchain needs
+- **sharp download fails on Windows**: `@huggingface/transformers` pulls
+  `sharp` (image-only, unused here). Install with `npm install --omit=optional`,
+  then add the platform binding your toolchain needs
   (e.g. `npm install -D @rolldown/binding-win32-x64-msvc@<rolldown-version>`
-  if vitest fails to start). `onnxruntime-node` is a direct dependency and
-  installs from prebuilt binaries.
+  if vitest fails to start). `onnxruntime-node` ships as a transformers
+  dependency and installs from prebuilt binaries.
+- **Semantic search fails on Alpine/musl**: `onnxruntime-node` ships glibc
+  binaries (`ld-linux-x86-64.so.2`). Use a glibc-based image or install
+  `gcompat`; the rest of the server is unaffected because the import is lazy.
 - **First semantic search is slow**: the multilingual embedding model
   (~120MB) downloads once from Hugging Face Hub and caches locally; the
   index then builds from recent threads. Subsequent queries are fast until

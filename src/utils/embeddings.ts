@@ -1,4 +1,4 @@
-import type { FeatureExtractionPipeline } from '@xenova/transformers';
+import type { FeatureExtractionPipeline } from '@huggingface/transformers';
 import { DEFAULT_SEMANTIC_MODEL } from './semantic.js';
 
 type EmbedFn = (texts: string[]) => Promise<number[][]>;
@@ -16,7 +16,7 @@ async function loadExtractor(id: string): Promise<FeatureExtractionPipeline> {
   if (!extractor || modelId !== id) {
     // Lazy import: keeps MCP startup fast (avoids loading transformers/onnx
     // on every `node dist/index.js` spawn; only paid on first semantic search).
-    const { pipeline } = await import('@xenova/transformers');
+    const { pipeline } = await import('@huggingface/transformers');
     extractor = (await pipeline('feature-extraction', id)) as FeatureExtractionPipeline;
     modelId = id;
   }

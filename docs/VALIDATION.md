@@ -8,8 +8,9 @@ Verified on Node.js 24.18.1 / npm 11.12.1 after a clean `npm install`:
 npm run check   # tsc build + vitest
 ```
 
-Result: **build passed**, **20 test files / 112 tests passed** (plus the
-guardrail tests for the filter TRASH block and attachment allowlist).
+Result: **build passed**, **21 test files / 114 tests passed** (including the
+guardrail tests for the filter TRASH block and attachment allowlist), and
+**`npm audit` reports 0 vulnerabilities**.
 
 A stdio smoke test was also run with placeholder credentials:
 
@@ -25,6 +26,9 @@ A stdio smoke test was also run with placeholder credentials:
   server to a production account.
 - The first semantic search downloads the embedding model from Hugging Face
   Hub; this requires network access and is not exercised by unit tests.
+- Semantic search uses `onnxruntime-node`, which ships glibc binaries. It does
+  not load on Alpine/musl without `gcompat`/`libc6-compat`; every other tool
+  works because the import is lazy.
 
 ## Static guardrails
 

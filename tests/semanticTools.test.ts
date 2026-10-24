@@ -78,6 +78,9 @@ describe('semantic tools', () => {
   it('flags stale indexes instead of silently serving them', async () => {
     const handlers = harness(0);
     await handlers.get('gmail_reindex_semantic')?.({});
+    // TTL 0 means "stale immediately"; wait one tick so builtAt < now even
+    // on fast runners where both calls land in the same millisecond.
+    await new Promise((resolve) => setTimeout(resolve, 5));
     const found = parseText((await handlers.get('gmail_semantic_search')?.({ query: 'contrato', max_results: 5 })) as Record<
       string,
       unknown
